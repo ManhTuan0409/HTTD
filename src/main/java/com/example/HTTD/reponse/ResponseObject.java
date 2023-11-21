@@ -7,7 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class LoginResponse {
-    String message;
-    Boolean status;
+public class ResponseObject {
+    private Number status;
+    private String message;
+    private boolean isSuccess;
+    private Object data;
 }

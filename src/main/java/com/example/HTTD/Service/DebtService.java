@@ -1,4 +1,4 @@
-package com.example.HTTD.Service.IMPL;
+package com.example.HTTD.Service;
 
 public interface DebtService {
 }

@@ -1,13 +1,11 @@
 package com.example.HTTD.Dto;
 
-import java.util.Date;
+import lombok.*;
 
-public class RegisterDto {
-    private String fullname;
-    private String email;
+@Data
+public class SignUpDto {
+    private String name;
     private String username;
+    private String email;
     private String password;
-    private String sdt;
-    private Byte gender;
-    private Date birthday;
 }
