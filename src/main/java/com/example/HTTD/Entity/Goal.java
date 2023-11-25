@@ -8,24 +8,24 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name="goals")
+@Table(name="goal")
 public class Goal {
     @Id
-    @Column(name="goalId", length = 45)
+    @Column(name="id", length = 45)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long goalId;
-    @Column(name="goalName", length = 255)
-    private String goalName;
-    @Column(name="goalAmount")
-    private float goalAmount;
+    private Long id;
+    @Column(name="name", length = 255)
+    private String name;
+    @Column(name="amount")
+    private Float amount;
     @Column(name="currentAmount")
-    private float currentAmount;
+    private Float currentAmount;
     @Column(name="startDay")
     private Date startDay;
     @Column(name="endDay")
     private Date endDay;
 
     @ManyToOne
-    @JoinColumn(name = "userid", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }

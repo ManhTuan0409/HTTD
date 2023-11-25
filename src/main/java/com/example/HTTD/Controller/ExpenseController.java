@@ -1,7 +1,7 @@
 package com.example.HTTD.Controller;
 
-import com.example.HTTD.Entity.Wallet;
-import com.example.HTTD.Service.WalletService;
+import com.example.HTTD.Entity.Expense;
+import com.example.HTTD.Service.ExpenseService;
 import com.example.HTTD.reponse.ResponseObject;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,91 +13,90 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/auth/wallet")
-public class WalletController {
-
+@RequestMapping("api/auth/expense")
+public class ExpenseController {
     @Autowired
-    private WalletService walletService;
+    private ExpenseService expenseService;
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseObject> createWallet(@RequestBody Wallet wallet){
+    public ResponseEntity<ResponseObject> createExpense(@RequestBody Expense expense){
         try{
-            Wallet savedWallet = walletService.createWallet(wallet);
+            Expense savedExpense = expenseService.createExpense(expense);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(1, "Tạo Ví thành công",true, savedWallet)
+                    new ResponseObject(1, "Tạo mục tiêu thành công",true, savedExpense)
             );
         }catch (Exception e)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ResponseObject(0, "Có lỗi xảy ra khi tạo Ví",false, "")
+                    new ResponseObject(0, "Có lỗi xảy ra khi tạo mục tiêu",false, "")
             );
         }
 
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<ResponseObject> getWalletById(@PathVariable("id") Long walletId){
+    public ResponseEntity<ResponseObject> getExpenseById(@PathVariable("id") Long ExpenseId){
         try{
-            Wallet wallet = walletService.getWalletById(walletId);
+            Expense expense = expenseService.getExpenseById(ExpenseId);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(1, "Thành công",true, wallet)
+                    new ResponseObject(1, "Thành công",true, expense)
             );
         }catch (Exception e)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ResponseObject(0, "Mã ví không tồn tại",false, "")
+                    new ResponseObject(0, "Mã mục tiêu không tồn tại",false, "")
             );
         }
 
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ResponseObject> getAllWallets(){
+    public ResponseEntity<ResponseObject> getAllExpenses(){
         try{
-            List<Wallet> listwallet = walletService.getAllWallet();
+            List<Expense> listExpense = expenseService.getAllExpense();
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(1, "Thành công",true, listwallet)
+                    new ResponseObject(1, "Thành công",true, listExpense)
             );
         }catch (Exception e)
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(0, "Thất bại, có lỗi xảy ra",false, "")
             );
         }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> updateWallet(@PathVariable("id") Long walletId, @RequestBody Wallet wallet){
+    public ResponseEntity<ResponseObject> updateExpense(@PathVariable("id") Long expenseId, @RequestBody Expense expense){
         try{
-            wallet.setId(walletId);
-            Wallet updatedWallet = walletService.updateWallet(wallet);
+            expense.setId(expenseId);
+            Expense updatedExpense = expenseService.updateExpense(expense);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(1, "Cập nhật thành công",true, updatedWallet)
+                    new ResponseObject(1, "Cập nhật thành công",true, updatedExpense)
             );
         }catch (Exception e)
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(0, "Cập nhật thất bại",false, "")
             );
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseObject> deleteWallet(@PathVariable("id") Long walletId){
+    public ResponseEntity<ResponseObject> deleteExpense(@PathVariable("id") Long ExpenseId){
         try {
-            boolean isDeleted = walletService.deleteWallet(walletId);
+            boolean isDeleted = expenseService.deleteExpense(ExpenseId);
             if (isDeleted) {
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(1, "Xóa thành công", true, "")
                 );
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                        new ResponseObject(0, "Xóa thất bại, không tìm thấy ví có ID: " + walletId, false, "")
+                        new ResponseObject(0, "Xóa thất bại, không tìm thấy chi phí có ID: " + ExpenseId, false, "")
                 );
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject(0, "Lỗi khi xóa ví: " + e.getMessage(), false, "")
+                    new ResponseObject(0, "Lỗi khi xóa chi phí: " + e.getMessage(), false, "")
             );
         }
     }

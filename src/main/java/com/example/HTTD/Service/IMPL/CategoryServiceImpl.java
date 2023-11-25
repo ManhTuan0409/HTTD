@@ -1,7 +1,6 @@
 package com.example.HTTD.Service.IMPL;
 
-import com.example.HTTD.Entity.ExCategory;
-import com.example.HTTD.Entity.Expense;
+import com.example.HTTD.Entity.Category;
 import com.example.HTTD.Repository.CategoryRepository;
 import com.example.HTTD.Service.CategoryService;
 import lombok.AllArgsConstructor;
@@ -15,26 +14,26 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
     @Override
-    public ExCategory createCategory(ExCategory category) {
+    public Category createCategory(Category category) {
         return categoryRepository.save(category);
     }
 
     @Override
-    public ExCategory getCategoryById(Long categoryId) {
-        Optional<ExCategory> optional = categoryRepository.findById(categoryId);
+    public Category getCategoryById(Long categoryId) {
+        Optional<Category> optional = categoryRepository.findById(categoryId);
         return optional.orElse(null);
     }
 
     @Override
-    public List<ExCategory> getAllCategory() {
+    public List<Category> getAllCategory() {
         return categoryRepository.findAll();
     }
 
     @Override
-    public ExCategory updateCategory(ExCategory category) {
-        ExCategory existingcategory = categoryRepository.findById(category.getCategoryId()).get();
-        existingcategory.setCategoryName(category.getCategoryName());
-        ExCategory updatedcategory = categoryRepository.save(existingcategory);
+    public Category updateCategory(Category category) {
+        Category existingcategory = categoryRepository.findById(category.getId()).get();
+        existingcategory.setName(category.getName());
+        Category updatedcategory = categoryRepository.save(existingcategory);
         return updatedcategory;
     }
 

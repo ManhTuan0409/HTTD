@@ -22,7 +22,11 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Wallet getWalletById(Long walletId) {
         Optional<Wallet> optionalWallet = walletRepository.findById(walletId);
-        return optionalWallet.get();
+        if (optionalWallet.isPresent()) {
+            return optionalWallet.get();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -32,8 +36,8 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public Wallet updateWallet(Wallet wallet) {
-        Wallet existingwallet = walletRepository.findById(wallet.getWallId()).get();
-        existingwallet.setWallName(wallet.getWallName());
+        Wallet existingwallet = walletRepository.findById(wallet.getId()).get();
+        existingwallet.setName(wallet.getName());
         existingwallet.setAmount(wallet.getAmount());
         existingwallet.setDate_created(wallet.getDate_created());
         Wallet updatedWallet = walletRepository.save(existingwallet);
@@ -41,7 +45,12 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void deleteWallet(Long walletId) {
-        walletRepository.deleteById(walletId);
+    public boolean deleteWallet(Long walletId) {
+        Optional<Wallet> walletOptional = walletRepository.findById(walletId);
+        if (walletOptional.isPresent()) {
+            walletRepository.deleteById(walletId);
+            return true;
+        }
+        return false;
     }
 }

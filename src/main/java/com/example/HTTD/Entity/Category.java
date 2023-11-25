@@ -7,16 +7,16 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name="categories")
-public class ExCategory {
+@Table(name="category")
+public class Category {
     @Id
-    @Column(name="categoryId", length = 45)
+    @Column(name="id", length = 45)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long categoryId;
+    private Long id;
 
-    @Column(name="categoryName", length = 255)
-    private String categoryName;
+    @Column(name="name", length = 255)
+    private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Expense> expens;
+    private List<Expense> expense;
 }

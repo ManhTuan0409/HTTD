@@ -6,16 +6,16 @@ import lombok.*;
 import java.util.Date;
 @Entity
 @Data
-@Table(name="wallets")
+@Table(name="wallet")
 public class Wallet {
     @Id
-    @Column(name="wallId", length = 45)
+    @Column(name="id", length = 45)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long wallId;
-    @Column(name="wallName", length = 255)
-    private String wallName;
+    private Long id;
+    @Column(name="name", length = 255)
+    private String name;
     @Column(name="amount", length = 255)
-    private float amount;
+    private Float amount;
     @Column(name="date_created")
     private Date date_created;
 }

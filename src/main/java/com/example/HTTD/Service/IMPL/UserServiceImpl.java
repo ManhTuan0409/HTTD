@@ -13,11 +13,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
     public User getUserByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         return optionalUser.get();

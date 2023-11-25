@@ -1,17 +1,17 @@
 package com.example.HTTD.Service;
 
-import com.example.HTTD.Entity.ExCategory;
+import com.example.HTTD.Entity.Category;
 
 import java.util.List;
 
 public interface CategoryService {
-    ExCategory createCategory(ExCategory category);
+    Category createCategory(Category category);
 
-    ExCategory getCategoryById(Long categoryId);
+    Category getCategoryById(Long categoryId);
 
-    List<ExCategory> getAllCategory();
+    List<Category> getAllCategory();
 
-    ExCategory updateCategory(ExCategory category);
+    Category updateCategory(Category category);
 
     void deleteCategory(Long categoryId);
 }

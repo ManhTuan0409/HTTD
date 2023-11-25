@@ -5,18 +5,18 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="incomes")
+@Table(name="income")
 public class Income {
     @Id
-    @Column(name="incomeId", length = 45)
+    @Column(name="id", length = 45)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long incomeId;
-    @Column(name="incomeName", length = 255)
+    private Float id;
+    @Column(name="name", length = 255)
     private String incomeName;
     @Column(name="amount", length = 255)
-    private float amount;
+    private Float amount;
 
     @ManyToOne
-    @JoinColumn(name = "userid", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }

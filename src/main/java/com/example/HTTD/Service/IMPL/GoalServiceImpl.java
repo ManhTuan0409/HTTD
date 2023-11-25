@@ -1,15 +1,17 @@
 package com.example.HTTD.Service.IMPL;
 
-import com.example.HTTD.Entity.Expense;
 import com.example.HTTD.Entity.Goal;
+import com.example.HTTD.Entity.Wallet;
 import com.example.HTTD.Repository.GoalRepository;
 import com.example.HTTD.Service.GoalService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class GoalServiceImpl implements GoalService {
 
     GoalRepository goalRepository;
@@ -32,9 +34,9 @@ public class GoalServiceImpl implements GoalService {
 
     @Override
     public Goal updateGoal(Goal goal) {
-        Goal existinggoal = goalRepository.findById(goal.getGoalId()).get();
-        existinggoal.setGoalName(goal.getGoalName());
-        existinggoal.setGoalAmount(goal.getGoalAmount());
+        Goal existinggoal = goalRepository.findById(goal.getId()).get();
+        existinggoal.setName(goal.getName());
+        existinggoal.setAmount(goal.getAmount());
         existinggoal.setCurrentAmount(goal.getCurrentAmount());
         existinggoal.setStartDay(goal.getStartDay());
         existinggoal.setEndDay(goal.getEndDay());
@@ -43,7 +45,12 @@ public class GoalServiceImpl implements GoalService {
     }
 
     @Override
-    public void deleteGoal(Long goalId) {
-        goalRepository.deleteById(goalId);
+    public boolean deleteGoal(Long goalId) {
+        Optional<Goal> goalOptional = goalRepository.findById(goalId);
+        if (goalOptional.isPresent()) {
+            goalRepository.deleteById(goalId);
+            return true;
+        }
+        return false;
     }
 }

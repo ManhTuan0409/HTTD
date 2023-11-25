@@ -7,16 +7,16 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name="debts")
+@Table(name="debt")
 public class Debt {
     @Id
-    @Column(name="debtId", length = 45)
+    @Column(name="id", length = 45)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long debtId;
-    @Column(name="debtName", length = 255)
-    private String debtName;
-    @Column(name="debtAmount")
-    private float debtAmount;
+    private Long id;
+    @Column(name="name", length = 255)
+    private String name;
+    @Column(name="amount")
+    private Float amount;
 
     @Column(name="startDay")
     private Date startDay;
@@ -24,6 +24,6 @@ public class Debt {
     private Date endDay;
 
     @ManyToOne
-    @JoinColumn(name = "userid", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User users;
 }

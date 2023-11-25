@@ -13,5 +13,5 @@ public interface GoalService {
 
     Goal updateGoal(Goal goal);
 
-    void deleteGoal(Long goalId);
+    boolean deleteGoal(Long goalId);
 }

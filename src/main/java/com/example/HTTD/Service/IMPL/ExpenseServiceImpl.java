@@ -33,8 +33,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense updateExpense(Expense expense) {
-        Expense existingexpense = expenseRepository.findById(expense.getExpenseId()).get();
-        existingexpense.setExpenseName(expense.getExpenseName());
+        Expense existingexpense = expenseRepository.findById(expense.getId()).get();
+        existingexpense.setName(expense.getName());
+        existingexpense.setDescription(expense.getDescription());
         existingexpense.setAmount(expense.getAmount());
         existingexpense.setDate_created(expense.getDate_created());
         Expense updatedexpense = expenseRepository.save(existingexpense);
@@ -42,7 +43,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public void deleteExpense(Long expenseId) {
-        expenseRepository.deleteById(expenseId);
+    public boolean deleteExpense(Long expenseId) {
+        Optional<Expense> expenseOptional = expenseRepository.findById(expenseId);
+        if (expenseOptional.isPresent()) {
+            expenseRepository.deleteById(expenseId);
+            return true;
+        }
+        return false;
     }
 }

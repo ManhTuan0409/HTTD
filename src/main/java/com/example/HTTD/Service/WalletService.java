@@ -13,5 +13,5 @@ public interface WalletService {
 
     Wallet updateWallet(Wallet wallet);
 
-    void deleteWallet(Long walletId);
+    boolean deleteWallet(Long walletId);
 }
