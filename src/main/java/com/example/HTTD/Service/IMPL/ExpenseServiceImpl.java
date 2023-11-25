@@ -1,6 +1,9 @@
 package com.example.HTTD.Service.IMPL;
 
+import com.example.HTTD.Entity.Category;
+import com.example.HTTD.Entity.Debt;
 import com.example.HTTD.Entity.Expense;
+import com.example.HTTD.Repository.CategoryRepository;
 import com.example.HTTD.Repository.ExpenseRepository;
 import com.example.HTTD.Service.ExpenseService;
 import lombok.AllArgsConstructor;
@@ -14,6 +17,8 @@ import java.util.Optional;
 public class ExpenseServiceImpl implements ExpenseService {
 
     ExpenseRepository expenseRepository;
+
+    CategoryRepository categoryRepository;
 
     @Override
     public Expense createExpense(Expense expense) {
@@ -33,13 +38,15 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense updateExpense(Expense expense) {
-        Expense existingexpense = expenseRepository.findById(expense.getId()).get();
-        existingexpense.setName(expense.getName());
-        existingexpense.setDescription(expense.getDescription());
-        existingexpense.setAmount(expense.getAmount());
-        existingexpense.setDate_created(expense.getDate_created());
-        Expense updatedexpense = expenseRepository.save(existingexpense);
-        return updatedexpense;
+        Expense existing = expenseRepository.findById(expense.getId()).get();
+        existing.setName(expense.getName());
+        existing.setAmount(expense.getAmount());
+        existing.setDescription(expense.getDescription());
+        existing.setDate_created(expense.getDate_created());
+        existing.setCategory(expense.getCategory());
+        existing.setUsers(expense.getUsers());
+        Expense updated = expenseRepository.save(existing);
+        return updated;
     }
 
     @Override

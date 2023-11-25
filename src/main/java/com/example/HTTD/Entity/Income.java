@@ -10,9 +10,9 @@ public class Income {
     @Id
     @Column(name="id", length = 45)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Float id;
+    private Long id;
     @Column(name="name", length = 255)
-    private String incomeName;
+    private String Name;
     @Column(name="amount", length = 255)
     private Float amount;
 
