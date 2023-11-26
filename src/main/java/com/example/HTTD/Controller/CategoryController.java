@@ -90,7 +90,7 @@ public class CategoryController {
             );
         }catch (Exception e)
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(0, "Xóa thất bại",false, "")
             );
         }

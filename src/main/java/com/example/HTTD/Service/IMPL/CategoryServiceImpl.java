@@ -1,6 +1,7 @@
 package com.example.HTTD.Service.IMPL;
 
 import com.example.HTTD.Entity.Category;
+import com.example.HTTD.Entity.Expense;
 import com.example.HTTD.Repository.CategoryRepository;
 import com.example.HTTD.Service.CategoryService;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(Long categoryId) {
-        categoryRepository.deleteById(categoryId);
+    public boolean deleteCategory(Long categoryId) {
+        Optional<Category> Optional = categoryRepository.findById(categoryId);
+        if (Optional.isPresent()) {
+            categoryRepository.deleteById(categoryId);
+            return true;
+        }
+        return false;
     }
 }

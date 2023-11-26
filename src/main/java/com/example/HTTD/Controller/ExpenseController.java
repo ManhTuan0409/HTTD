@@ -1,6 +1,10 @@
 package com.example.HTTD.Controller;
 
+import com.example.HTTD.Dto.ExpenseDto;
+import com.example.HTTD.Entity.Category;
 import com.example.HTTD.Entity.Expense;
+import com.example.HTTD.Repository.CategoryRepository;
+import com.example.HTTD.Service.CategoryService;
 import com.example.HTTD.Service.ExpenseService;
 import com.example.HTTD.reponse.ResponseObject;
 import lombok.AllArgsConstructor;
@@ -18,17 +22,35 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<Category>> getAllCategories() {
+        List<Category> categories = categoryService.getAllCategory();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
     @PostMapping("/add")
-    public ResponseEntity<ResponseObject> createExpense(@RequestBody Expense expense){
+    public ResponseEntity<ResponseObject> createExpense(@RequestBody ExpenseDto expenseDto){
         try{
+            Expense expense = new Expense();
+            expense.setName(expenseDto.getName());
+            expense.setDescription(expenseDto.getDescription());
+            expense.setAmount(expenseDto.getAmount());
+            expense.setDate_created(expenseDto.getDate_created());
+            Category category = categoryRepository.findById(expenseDto.getCategoryId()).orElse(null);
+            expense.setCategory(category);
             Expense savedExpense = expenseService.createExpense(expense);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(1, "Tạo mục tiêu thành công",true, savedExpense)
+                    new ResponseObject(1, "Tạo chi phí thành công",true, savedExpense)
             );
         }catch (Exception e)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ResponseObject(0, "Có lỗi xảy ra khi tạo mục tiêu",false, "")
+                    new ResponseObject(0, "Có lỗi xảy ra khi tạo chi phí",false, "")
             );
         }
 

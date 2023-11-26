@@ -17,8 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +24,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth/user")
 public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -60,6 +58,9 @@ public class UserController {
                 UserResponse userResponse = new UserResponse();
                 userResponse.setId(user.getId());
                 userResponse.setName(user.getName());
+                userResponse.setGender(user.getGender());
+                userResponse.setBirthday(user.getBirthday());
+                userResponse.setSdt(user.getSdt());
                 userResponse.setUsername(user.getUsername());
                 userResponse.setEmail(user.getEmail());
                 userResponse.setRoles(user.getRoles());
@@ -68,7 +69,7 @@ public class UserController {
                         new ResponseObject(1, "Đăng nhập thành công", true, userResponse)
                 );
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                         new ResponseObject(0, "Đăng nhập thất bại", false, "")
                 );
             }
@@ -99,6 +100,9 @@ public class UserController {
             // create user object
             User user = new User();
             user.setName(signUpDto.getName());
+            user.setGender(signUpDto.getGender());
+            user.setBirthday(signUpDto.getBirthday());
+            user.setSdt(signUpDto.getSdt());
             user.setUsername(signUpDto.getUsername());
             user.setEmail(signUpDto.getEmail());
             user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));

@@ -17,6 +17,6 @@ public class Category {
     @Column(name="name", length = 255)
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Expense> expense;
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+//    private List<Expense> expense;
 }

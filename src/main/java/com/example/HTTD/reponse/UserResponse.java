@@ -4,6 +4,7 @@ import com.example.HTTD.Entity.Role;
 import lombok.*;
 
 
+import java.util.Date;
 import java.util.Set;
 
 @Setter
@@ -16,5 +17,8 @@ public class UserResponse {
     private String name;
     private String username;
     private String email;
+    private Byte gender;
+    private Date birthday;
+    private String sdt;
     private Set<Role> roles;
 }

@@ -1,9 +1,6 @@
 package com.example.HTTD.Service.IMPL;
 
-import com.example.HTTD.Entity.Category;
-import com.example.HTTD.Entity.Debt;
 import com.example.HTTD.Entity.Expense;
-import com.example.HTTD.Repository.CategoryRepository;
 import com.example.HTTD.Repository.ExpenseRepository;
 import com.example.HTTD.Service.ExpenseService;
 import lombok.AllArgsConstructor;
@@ -17,8 +14,6 @@ import java.util.Optional;
 public class ExpenseServiceImpl implements ExpenseService {
 
     ExpenseRepository expenseRepository;
-
-    CategoryRepository categoryRepository;
 
     @Override
     public Expense createExpense(Expense expense) {

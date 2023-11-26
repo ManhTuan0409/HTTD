@@ -1,10 +1,10 @@
 package com.example.HTTD.Entity;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Byte gender;
+    private Date birthday;
+    private String sdt;
     private String username;
     private String email;
     private String password;

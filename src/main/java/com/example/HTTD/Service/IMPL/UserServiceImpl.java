@@ -1,7 +1,6 @@
 package com.example.HTTD.Service.IMPL;
 
 import com.example.HTTD.Entity.User;
-import com.example.HTTD.Entity.Wallet;
 import com.example.HTTD.Repository.UserRepository;
 import com.example.HTTD.Service.UserService;
 import org.springframework.stereotype.Service;
