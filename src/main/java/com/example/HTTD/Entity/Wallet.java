@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.Set;
+
 @Entity
 @Data
 @Table(name="wallet")
@@ -18,4 +20,12 @@ public class Wallet {
     private Float amount;
     @Column(name="date_created")
     private Date date_created;
+
+    @PrePersist
+    protected void onCreate() {
+        this.date_created = new Date();
+    }
+
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
+    private Set<Expense> expense;
 }

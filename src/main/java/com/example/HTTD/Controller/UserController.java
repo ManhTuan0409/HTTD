@@ -1,7 +1,9 @@
 package com.example.HTTD.Controller;
 
+
 import com.example.HTTD.Dto.LoginDto;
 import com.example.HTTD.Dto.SignUpDto;
+import com.example.HTTD.Entity.Expense;
 import com.example.HTTD.Entity.Role;
 import com.example.HTTD.Entity.User;
 import com.example.HTTD.Repository.RoleRepository;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,12 +35,11 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
@@ -45,6 +47,36 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @GetMapping("/listUser")
+    public ResponseEntity<ResponseObject> getAllUser(){
+        try{
+            List<User> user = userRepository.findAll();
+                // Process user details as needed
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(1, "Đăng nhập thành công", true, "")
+                );
+        }catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(0, "Thất bại, có lỗi xảy ra",false, "")
+            );
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseObject> UpdateUser(@PathVariable("id") Long idUser, User updateUser) {
+        try {
+
+            User updatedUser = userService.updateUser(idUser, updateUser);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(1, "Thay đổi thông tin thành công", true, updatedUser)
+            );
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject(0, "Có lỗi xảy ra", false, "")
+            );
+        }
+    }
     @PostMapping("/signin")
     public ResponseEntity<ResponseObject> authenticateUser(@RequestBody LoginDto loginDto) {
         try {
@@ -60,7 +92,7 @@ public class UserController {
                 userResponse.setName(user.getName());
                 userResponse.setGender(user.getGender());
                 userResponse.setBirthday(user.getBirthday());
-                userResponse.setSdt(user.getSdt());
+                userResponse.setPhone(user.getPhone());
                 userResponse.setUsername(user.getUsername());
                 userResponse.setEmail(user.getEmail());
                 userResponse.setRoles(user.getRoles());
@@ -102,11 +134,11 @@ public class UserController {
             user.setName(signUpDto.getName());
             user.setGender(signUpDto.getGender());
             user.setBirthday(signUpDto.getBirthday());
-            user.setSdt(signUpDto.getSdt());
+            user.setPhone(signUpDto.getPhone());
             user.setUsername(signUpDto.getUsername());
             user.setEmail(signUpDto.getEmail());
             user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-            Role roles = roleRepository.findByName("ROLE_ADMIN").get();
+            Role roles = roleRepository.findByName("ROLE_USER").get();
             user.setRoles(Collections.singleton(roles));
 
             userRepository.save(user);

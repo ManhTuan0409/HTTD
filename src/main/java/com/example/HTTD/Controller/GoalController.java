@@ -19,7 +19,7 @@ public class GoalController {
     @Autowired
     private GoalService goalService;
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ResponseObject> createGoal(@RequestBody Goal goal){
         try{
             Goal savedGoal = goalService.createGoal(goal);
@@ -35,7 +35,7 @@ public class GoalController {
 
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getGoalById(@PathVariable("id") Long GoalId){
         try{
             Goal goal = goalService.getGoalById(GoalId);
@@ -51,7 +51,7 @@ public class GoalController {
 
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<ResponseObject> getAllGoals(){
         try{
             List<Goal> listGoal = goalService.getAllGoal();
@@ -66,7 +66,7 @@ public class GoalController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseObject> updateGoal(@PathVariable("id") Long GoalId, @RequestBody Goal goal){
         try{
             goal.setId(GoalId);
@@ -82,7 +82,7 @@ public class GoalController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleteGoal(@PathVariable("id") Long GoalId){
         try {
             boolean isDeleted = goalService.deleteGoal(GoalId);

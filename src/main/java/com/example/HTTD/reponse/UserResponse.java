@@ -19,6 +19,6 @@ public class UserResponse {
     private String email;
     private Byte gender;
     private Date birthday;
-    private String sdt;
+    private String phone;
     private Set<Role> roles;
 }

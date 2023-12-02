@@ -21,7 +21,7 @@ public class DebtController {
     @Autowired
     private DebtService debtService;
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ResponseObject> created (@RequestBody Debt debt){
         try{
             Debt saved = debtService.createDebt(debt);
@@ -37,7 +37,7 @@ public class DebtController {
 
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getById(@PathVariable("id") Long id){
         try{
             Debt debt = debtService.getDebtById(id);
@@ -46,14 +46,14 @@ public class DebtController {
             );
         }catch (Exception e)
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(0, "Mã khoản nợ không tồn tại",false, "")
             );
         }
 
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<ResponseObject> getAll(){
         try{
             List<Debt> list = debtService.getAllDebt();
@@ -62,13 +62,13 @@ public class DebtController {
             );
         }catch (Exception e)
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ResponseObject(0, "Thất bại, có lỗi xảy ra",false, "")
             );
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseObject> updated(@PathVariable("id") Long id, @RequestBody Debt debt){
         try{
             debt.setId(id);
@@ -84,7 +84,7 @@ public class DebtController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleted (@PathVariable("id") Long id){
         try {
             boolean isDeleted = debtService.deleteDebt(id);

@@ -18,7 +18,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ResponseObject> createCategory(@RequestBody Category category){
         try{
             Category savedCategory = categoryService.createCategory(category);
@@ -34,7 +34,7 @@ public class CategoryController {
 
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getCategoryById(@PathVariable("id") Long categoryId){
         try{
             Category category = categoryService.getCategoryById(categoryId);
@@ -43,14 +43,14 @@ public class CategoryController {
             );
         }catch (Exception e)
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(0, "Mã danh mục không tồn tại",false, "")
             );
         }
 
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<ResponseObject> getAllCategories(){
         try{
             List<Category> listcategory = categoryService.getAllCategory();
@@ -65,7 +65,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseObject> updateCategory(@PathVariable("id") Long categoryId, @RequestBody Category category){
         try{
             category.setId(categoryId);
@@ -81,17 +81,22 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleteCategory(@PathVariable("id") Long categoryId){
-        try{
-            categoryService.deleteCategory(categoryId);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(1, "Xóa thành công",true, "")
-            );
-        }catch (Exception e)
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(0, "Xóa thất bại",false, "")
+        try {
+            boolean isDeleted = categoryService.deleteCategory(categoryId);
+            if (isDeleted) {
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(1, "Xóa danh mục thành công", true, "")
+                );
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                        new ResponseObject(0, "Xóa thất bại, không tìm thấy danh mục có ID: " + categoryId, false, "")
+                );
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new ResponseObject(0, "có lỗi xảy ra khi xóa danh mục: " + e.getMessage(), false, "")
             );
         }
     }

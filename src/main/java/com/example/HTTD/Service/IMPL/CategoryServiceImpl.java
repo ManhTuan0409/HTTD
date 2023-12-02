@@ -14,6 +14,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
+
+    @Override
+    public Category getById(Long id) {
+        Optional<Category> optional = categoryRepository.findById(id);
+        return optional.orElse(null);
+    }
     @Override
     public Category createCategory(Category category) {
         return categoryRepository.save(category);
@@ -47,4 +53,5 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return false;
     }
+
 }

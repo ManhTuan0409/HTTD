@@ -19,7 +19,7 @@ public class IncomeController {
     @Autowired
     private IncomeService incomeService;
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ResponseObject> created (@RequestBody Income income){
         try{
             Income saved = incomeService.create(income);
@@ -35,7 +35,7 @@ public class IncomeController {
 
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getById(@PathVariable("id") Long id){
         try{
             Income income = incomeService.getById(id);
@@ -51,7 +51,7 @@ public class IncomeController {
 
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<ResponseObject> getAll(){
         try{
             List<Income> list = incomeService.getAll();
@@ -66,7 +66,7 @@ public class IncomeController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseObject> updated (@PathVariable("id") Long id, @RequestBody Income income){
         try{
             income.setId(id);
@@ -82,7 +82,7 @@ public class IncomeController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleted (@PathVariable("id") Long id){
         try {
             boolean isDeleted = incomeService.delete(id);

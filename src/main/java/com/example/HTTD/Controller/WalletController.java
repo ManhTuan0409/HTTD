@@ -19,7 +19,7 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ResponseObject> createWallet(@RequestBody Wallet wallet){
         try{
             Wallet savedWallet = walletService.createWallet(wallet);
@@ -35,7 +35,7 @@ public class WalletController {
 
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getWalletById(@PathVariable("id") Long walletId){
         try{
             Wallet wallet = walletService.getWalletById(walletId);
@@ -51,7 +51,7 @@ public class WalletController {
 
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<ResponseObject> getAllWallets(){
         try{
             List<Wallet> listwallet = walletService.getAllWallet();
@@ -66,7 +66,7 @@ public class WalletController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseObject> updateWallet(@PathVariable("id") Long walletId, @RequestBody Wallet wallet){
         try{
             wallet.setId(walletId);
@@ -82,7 +82,7 @@ public class WalletController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleteWallet(@PathVariable("id") Long walletId){
         try {
             boolean isDeleted = walletService.deleteWallet(walletId);
