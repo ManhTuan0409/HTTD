@@ -1,6 +1,8 @@
 package com.example.HTTD.Controller;
 
+import com.example.HTTD.Entity.User;
 import com.example.HTTD.Entity.Wallet;
+import com.example.HTTD.Service.UserService;
 import com.example.HTTD.Service.WalletService;
 import com.example.HTTD.reponse.ResponseObject;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -19,20 +22,37 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    @PostMapping
-    public ResponseEntity<ResponseObject> createWallet(@RequestBody Wallet wallet){
+    @Autowired
+    private UserService userService;
+    @PostMapping("/{id}")
+    public ResponseEntity<ResponseObject> createWallet(@PathVariable("id") Long userId, @RequestBody Wallet wallet){
         try{
-            Wallet savedWallet = walletService.createWallet(wallet);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(1, "Tạo Ví thành công",true, savedWallet)
-            );
-        }catch (Exception e)
-        {
+            Optional<User> optionalUser = userService.findById(userId);
+            if(optionalUser.isPresent())
+            {
+                User user = optionalUser.get();
+                // Check if the user already has a wallet
+                if (user.getWallet() != null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                            new ResponseObject(0, "Người dùng đã có ví", false, "")
+                    );
+                }
+                wallet.setUsers(user);
+                Wallet savedWallet = walletService.createWallet(wallet);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(1, "Tạo Ví thành công", true, savedWallet)
+                );
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                        new ResponseObject(0, "Người dùng không hợp lệ", false, "")
+                );
+            }
+
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ResponseObject(0, "Có lỗi xảy ra khi tạo Ví",false, "")
+                    new ResponseObject(0, "Có lỗi xảy ra khi tạo Ví", false, "")
             );
         }
-
     }
 
     @GetMapping("/{id}")

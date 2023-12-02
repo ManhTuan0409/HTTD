@@ -6,17 +6,14 @@ import java.util.Date;
 
 
 @Data
-@AllArgsConstructor
-@Getter
-@Setter
-@NoArgsConstructor
 public class ExpenseDto {
     private String name;
     private String description;
     private Float amount;
     private Long categoryId;
-    private Long walletId;
     private Date date_created;
+    private Long userId;
+
 
     private String category;
     private Float totalAmount;

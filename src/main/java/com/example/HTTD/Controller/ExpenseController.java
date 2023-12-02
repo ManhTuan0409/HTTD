@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,26 +69,29 @@ public class ExpenseController {
                 new ResponseObject(0, "Tạo chi phí thành công",true, expenseDto)
         );
     }
-    @PostMapping("/{id}")
-    public ResponseEntity<ResponseObject> createExpense(@PathVariable("id") Long walletId, @RequestBody ExpenseDto expenseDto) {
-        try {
+    @PostMapping("/{id1}/{id2}/{id3}")
+    public ResponseEntity<ResponseObject> createExpense(@PathVariable("id1") Long userId ,@PathVariable("id2") Long walletId,@PathVariable("id3") Long categoryId, @RequestBody Expense expenses) {
+        Optional<User> optionalUser = userService.findById(userId);
+        if(optionalUser.isPresent())
+        {
+            User user = optionalUser.get();
             Expense expense = new Expense();
-            expense.setName(expenseDto.getName());
-            expense.setDescription(expenseDto.getDescription());
-            expense.setAmount(expenseDto.getAmount());
-            expense.setDate_created(expenseDto.getDate_created());
+            expense.setName(expenses.getName());
+            expense.setDescription(expenses.getDescription());
+            expense.setAmount(expenses.getAmount());
+            expense.setDate_created(expenses.getDate_created());
             Wallet wallets = walletService.getWalletById(walletId);
             expense.setWallet(wallets);
-            Category category = categoryService.getById(expenseDto.getCategoryId());
+            Category category = categoryService.getById(categoryId);
             expense.setCategory(category);
-//                        expense.setUsers(user);
+            expense.setUsers(user);
             Expense savedExpense = expenseService.createExpense(expense);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(0, "Tạo chi phí thành công", true, savedExpense)
             );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ResponseObject(0, "Có lỗi xảy ra khi tạo chi phí", false, "")
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(0, "Người dùng không hợp lệ", false, "")
             );
         }
     }
@@ -122,52 +126,51 @@ public class ExpenseController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseObject> updateExpense(@PathVariable("id") Long expenseId, @RequestBody ExpenseDto expenseDto){
-        try{
-            Expense expense = expenseService.getExpenseById(expenseId);
-            if(expense != null)
-            {
-                expense.setName(expenseDto.getName());
-                expense.setDescription(expenseDto.getDescription());
-                expense.setAmount(expenseDto.getAmount());
-                Long walletId = expenseDto.getWalletId();
-                Category category = categoryService.getById(expenseDto.getCategoryId());
-                expense.setCategory(category);
-                if(walletId != null)
-                {
-                    Wallet wallet = walletService.getWalletById(walletId);
-                    // Kiểm tra xem có đủ tiền trong ví không
-                    Float newAmount = expenseDto.getAmount();
-                    if (wallet.getAmount() + expense.getAmount() >= newAmount){
-                        // Trả lại tiền vào ví cũ
-                        wallet.setAmount(wallet.getAmount() + expense.getAmount());
-                        // Trừ tiền từ ví mới
-                        wallet.setAmount(wallet.getAmount() - newAmount);
-                        walletService.createWallet(wallet);
-                        expense.setWallet(wallet);
-                        walletService.createWallet(wallet);
-                    }
-                }else {
-                    Expense savedExpense = expenseService.createExpense(expense);
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject(1, "Cập nhật thành công",true, savedExpense)
-                    );
-                }
-                return null;
-            }else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                        new ResponseObject(0, "Không tìm thấy id",true, "")
-                );
-            }
-
-        }catch (Exception e)
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(0, "Cập nhật thất bại",false, "")
-            );
-        }
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ResponseObject> updateExpense(@PathVariable("id") Long expenseId, @RequestBody ExpenseDto expenseDto){
+//        try{
+//            Expense expense = expenseService.getExpenseById(expenseId);
+//            if(expense != null)
+//            {
+//                expense.setName(expenseDto.getName());
+//                expense.setDescription(expenseDto.getDescription());
+//                expense.setAmount(expenseDto.getAmount());
+//                Category category = categoryService.getById(expenseDto.getCategoryId());
+//                expense.setCategory(category);
+//                if(walletId != null)
+//                {
+//                    Wallet wallet = walletService.getWalletById(walletId);
+//                    // Kiểm tra xem có đủ tiền trong ví không
+//                    Float newAmount = expenseDto.getAmount();
+//                    if (wallet.getAmount() + expense.getAmount() >= newAmount){
+//                        // Trả lại tiền vào ví cũ
+//                        wallet.setAmount(wallet.getAmount() + expense.getAmount());
+//                        // Trừ tiền từ ví mới
+//                        wallet.setAmount(wallet.getAmount() - newAmount);
+//                        walletService.createWallet(wallet);
+//                        expense.setWallet(wallet);
+//                        walletService.createWallet(wallet);
+//                    }
+//                }else {
+//                    Expense savedExpense = expenseService.createExpense(expense);
+//                    return ResponseEntity.status(HttpStatus.OK).body(
+//                            new ResponseObject(1, "Cập nhật thành công",true, savedExpense)
+//                    );
+//                }
+//                return null;
+//            }else{
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//                        new ResponseObject(0, "Không tìm thấy id",true, "")
+//                );
+//            }
+//
+//        }catch (Exception e)
+//        {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//                    new ResponseObject(0, "Cập nhật thất bại",false, "")
+//            );
+//        }
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleteExpense(@PathVariable("id") Long ExpenseId){

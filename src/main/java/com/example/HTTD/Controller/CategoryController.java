@@ -50,7 +50,7 @@ public class CategoryController {
 
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<ResponseObject> getAllCategories(){
         try{
             List<Category> listcategory = categoryService.getAllCategory();

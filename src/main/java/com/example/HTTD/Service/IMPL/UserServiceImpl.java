@@ -49,4 +49,9 @@ public class UserServiceImpl implements UserService {
         // Lưu lại vào cơ sở dữ liệu
         return userRepository.save(existingUser);
     }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
 }

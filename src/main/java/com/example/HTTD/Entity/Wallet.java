@@ -28,4 +28,8 @@ public class Wallet {
 
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
     private Set<Expense> expense;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User users;
 }

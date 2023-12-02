@@ -35,4 +35,7 @@ public class User {
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<Expense> expenses = new ArrayList<>();
+
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
+    private Wallet wallet;
 }
