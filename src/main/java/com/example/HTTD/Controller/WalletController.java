@@ -5,6 +5,8 @@ import com.example.HTTD.Entity.Wallet;
 import com.example.HTTD.Service.UserService;
 import com.example.HTTD.Service.WalletService;
 import com.example.HTTD.reponse.ResponseObject;
+import com.example.HTTD.reponse.UserResponse;
+import com.example.HTTD.reponse.WalletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,13 @@ public class WalletController {
                 }
                 wallet.setUsers(user);
                 Wallet savedWallet = walletService.createWallet(wallet);
+                WalletResponse walletResponse = new WalletResponse();
+                walletResponse.setId(savedWallet.getId());
+                walletResponse.setName(savedWallet.getName());
+                walletResponse.setAmount(savedWallet.getAmount());
+                walletResponse.setDate_created(savedWallet.getDate_created());
+                walletResponse.setUserId(savedWallet.getUsers().getId());
+                walletResponse.setUsername(savedWallet.getUsers().getUsername());
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(1, "Tạo Ví thành công", true, savedWallet)
                 );
